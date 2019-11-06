@@ -1,9 +1,15 @@
 ﻿using Kronos.WFD.Authentication;
+using Kronos.WFD.Client.Requests;
 using System;
 using System.Net.Http;
 
 namespace Kronos.WFD.Client
 {
+    public enum ApiVersion
+    {
+        v1
+    }
+
     public class BaseClient : IBaseClient
     {
         private string baseUrl;
@@ -11,29 +17,43 @@ namespace Kronos.WFD.Client
         /// <summary>
         /// Constructs a new <see cref="BaseClient"/>.
         /// </summary>
-        /// <param name="baseUrl">The base service URL. For example, "https://graph.microsoft.com/v1.0."</param>
+        /// <param name="tenantName">The base service URL. For example, "https://graph.microsoft.com/v1.0."</param>
         /// <param name="authenticationProvider">The <see cref="IAuthenticationProvider"/> for authenticating request messages.</param>
         /// <param name="httpProvider">The <see cref="IHttpProvider"/> for sending requests.</param>
         public BaseClient(
-            string baseUrl,
+            string tenantName,
             IAuthenticationProvider authenticationProvider,
+            ApiVersion apiVersion = ApiVersion.v1,
             IHttpProvider httpProvider = null)
         {
-            this.BaseUrl = baseUrl;
+            this.BaseUrl = "https://" + tenantName + ".mykronos.com/api";
+            switch (apiVersion)
+            {
+                default:
+                    this.BaseUrl += "/v1";
+                    break;
+            }
             this.AuthenticationProvider = authenticationProvider;
-            this.HttpProvider = httpProvider ?? new HttpProvider(new Serializer());
+            this.HttpProvider = httpProvider ?? new HttpProvider(tenantName, new Serializer());
         }
 
         /// <summary>
         /// Constructs a new <see cref="BaseClient"/>.
         /// </summary>
-        /// <param name="baseUrl">The base service URL. For example, "https://graph.microsoft.com/v1.0."</param>
+        /// <param name="tenantName">The base service URL. For example, "https://graph.microsoft.com/v1.0."</param>
         /// <param name="httpClient">The custom <see cref="HttpClient"/> to be used for making requests</param>
         public BaseClient(
-            string baseUrl,
-            HttpClient httpClient)
+            string tenantName,
+            HttpClient httpClient,
+            ApiVersion apiVersion = ApiVersion.v1)
         {
-            this.BaseUrl = baseUrl;
+            this.BaseUrl = "https://" + tenantName + ".mykronos.com/api";
+            switch (apiVersion)
+            {
+                default:
+                    this.BaseUrl += "/v1";
+                    break;
+            }
             this.HttpProvider = new SimpleHttpProvider(httpClient);
         }
 

@@ -1,5 +1,8 @@
-﻿using System;
+﻿using Kronos.WFD.Client.Requests;
+using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading;
@@ -19,8 +22,8 @@ namespace Kronos.WFD.Client
         /// Constructs a new <see cref="HttpProvider"/>.
         /// </summary>
         /// <param name="serializer">A serializer for serializing and deserializing JSON objects.</param>
-        public HttpProvider(ISerializer serializer = null)
-            : this((HttpMessageHandler)null, true, serializer)
+        public HttpProvider(string tenantName, ISerializer serializer = null)
+            : this(tenantName, (HttpMessageHandler)null, true, serializer)
         {
         }
 
@@ -35,8 +38,8 @@ namespace Kronos.WFD.Client
         ///     an <see cref="HttpClientHandler"/> to the constructor and enabling automatic redirects this could cause issues with authentication
         ///     over the redirect.
         /// </remarks>
-        public HttpProvider(HttpClientHandler httpClientHandler, bool disposeHandler, ISerializer serializer = null)
-            : this((HttpMessageHandler)httpClientHandler, disposeHandler, serializer)
+        public HttpProvider(string tenantName, HttpClientHandler httpClientHandler, bool disposeHandler, ISerializer serializer = null)
+            : this(tenantName, (HttpMessageHandler)httpClientHandler, disposeHandler, serializer)
         {
         }
 
@@ -46,7 +49,7 @@ namespace Kronos.WFD.Client
         /// <param name="httpMessageHandler">An HTTP message handler to pass to the <see cref="HttpClient"/> for sending requests.</param>
         /// <param name="disposeHandler">Whether or not to dispose the client handler on Dispose().</param>
         /// <param name="serializer">A serializer for serializing and deserializing JSON objects.</param>
-        public HttpProvider(HttpMessageHandler httpMessageHandler, bool disposeHandler, ISerializer serializer)
+        public HttpProvider(string tenantName, HttpMessageHandler httpMessageHandler, bool disposeHandler, ISerializer serializer)
         {
             this.disposeHandler = disposeHandler;
             this.httpMessageHandler = httpMessageHandler;
@@ -56,15 +59,13 @@ namespace Kronos.WFD.Client
             // This check won't be needed once we re-write the HttpProvider to work with GraphClientFactory.
             if (this.httpMessageHandler == null)
             {
-                this.httpMessageHandler = GraphClientFactory.GetNativePlatformHttpHandler();
-                this.httpClient = GraphClientFactory.Create(authenticationProvider: null, version: "v1.0", nationalCloud: GraphClientFactory.Global_Cloud, finalHandler: this.httpMessageHandler);
+                this.httpMessageHandler = WFDClientFactory.GetNativePlatformHttpHandler();
+                this.httpClient = WFDClientFactory.Create(authenticationProvider: null, tenantName: tenantName, version: "v1", finalHandler: this.httpMessageHandler);
             }
             else
             {
                 this.httpClient = new HttpClient(this.httpMessageHandler, this.disposeHandler);
             }
-
-            this.httpClient.SetFeatureFlag(FeatureFlag.DefaultHttpProvider);
         }
 
         /// <summary>
@@ -270,10 +271,20 @@ namespace Kronos.WFD.Client
         {
             try
             {
+                var errorResponse = new ErrorResponse
+                {
+                    AdditionalData = new Dictionary<string, object>
+                    {
+                        { "statusCode", response.StatusCode },
+                    }
+                };
+
                 using (var responseStream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false))
                 {
-                    return this.Serializer.DeserializeObject<ErrorResponse>(responseStream);
+                    errorResponse.Error = this.Serializer.DeserializeObject<Error>(responseStream);
                 }
+
+                return errorResponse;
             }
             catch (Exception)
             {

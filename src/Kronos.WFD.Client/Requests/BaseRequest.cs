@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -237,7 +238,8 @@ namespace Kronos.WFD.Client.Requests
                     }
                     else
                     {
-                        request.Content = new StringContent(this.Client.HttpProvider.Serializer.SerializeObject(serializableObject));
+                        var serializedContent = this.Client.HttpProvider.Serializer.SerializeObject(serializableObject);
+                        request.Content = new StringContent(serializedContent);
                     }
 
                     if (!string.IsNullOrEmpty(this.ContentType))
@@ -296,15 +298,14 @@ namespace Kronos.WFD.Client.Requests
         private void AddRequestContextToRequest(HttpRequestMessage httpRequestMessage, CancellationToken cancellationToken)
         {
             // Creates a request context object
-            var requestContext = new GraphRequestContext
+            var requestContext = new
             {
                 MiddlewareOptions = MiddlewareOptions,
                 ClientRequestId = GetHeaderValue(httpRequestMessage, CoreConstants.Headers.ClientRequestId) ?? Guid.NewGuid().ToString(),
                 CancellationToken = cancellationToken,
-                FeatureUsage = httpRequestMessage.GetFeatureFlags()
             };
 
-            httpRequestMessage.Properties.Add(typeof(GraphRequestContext).ToString(), requestContext);
+            httpRequestMessage.Properties.Add("RequestContext", requestContext);
         }
 
         /// <summary>
@@ -458,12 +459,6 @@ namespace Kronos.WFD.Client.Requests
         {
             switch (this.Client.HttpProvider)
             {
-                case HttpProvider provider when provider.httpClient.ContainsFeatureFlag(FeatureFlag.AuthHandler):
-                    return false; //no need to authenticate as we have an AuthHandler provided 
-
-                case SimpleHttpProvider simpleHttpProvider when simpleHttpProvider.httpClient.ContainsFeatureFlag(FeatureFlag.AuthHandler):
-                    return false; //no need to authenticate as we have an AuthHandler provided 
-
                 default:
                     return true;
 

@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 
 namespace Kronos.WFD.Client.Requests
 {
@@ -12,19 +10,21 @@ namespace Kronos.WFD.Client.Requests
 
         }
 
+        public IHyperfindQueryRequest Request(IEnumerable<Option> options)
+        {
+            return new HyperfindQueryRequest(this.RequestUrl, this.Client, options);
+        }
+
         public IHyperfindQueryRequest Request()
         {
             return this.Request(null);
-        }
-
-        public IHyperfindQueryRequest Request(string options)
-        {
-            return new HyperfindQueryRequest(this.RequestUrl, this.Client, options)
         }
     }
 
     public interface IHyperfindQueryRequestBuilder
     {
+        IHyperfindQueryRequest Request(IEnumerable<Option> options);
 
+        IHyperfindQueryRequest Request();
     }
 }

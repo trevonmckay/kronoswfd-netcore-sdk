@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Kronos.WFD
+﻿namespace Kronos.WFD
 {
     public class HyperfindQuery
     {

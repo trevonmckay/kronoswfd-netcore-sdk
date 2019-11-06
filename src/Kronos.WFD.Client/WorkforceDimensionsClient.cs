@@ -9,14 +9,15 @@ namespace Kronos.WFD.Client
         /// <summary>
         /// Instantiates a new GraphServiceClient.
         /// </summary>
-        /// <param name="baseUrl">The base service URL. For example, "https://graph.microsoft.com/v1.0".</param>
+        /// <param name="tenantName">The base service URL. For example, "https://graph.microsoft.com/v1.0".</param>
         /// <param name="authenticationProvider">The <see cref="IAuthenticationProvider"/> for authenticating request messages.</param>
         /// <param name="httpProvider">The <see cref="IHttpProvider"/> for sending requests.</param>
         public WorkforceDimensionsClient(
-            string baseUrl,
+            string tenantName,
             IAuthenticationProvider authenticationProvider,
+            ApiVersion apiVersion = ApiVersion.v1,
             IHttpProvider httpProvider = null)
-            : base(baseUrl, authenticationProvider, httpProvider)
+            : base(tenantName, authenticationProvider, apiVersion, httpProvider)
         {
         }
 
@@ -26,23 +27,44 @@ namespace Kronos.WFD.Client
         /// <param name="httpClient">The <see cref="HttpClient"/> to use for making requests to Microsoft Graph. Use the <see cref="GraphClientFactory"/>
         /// to get a pre-configured HttpClient that is optimized for use with the Microsoft Graph service API. </param>
         public WorkforceDimensionsClient(
-            string instanceUrl,
-            HttpClient httpClient)
-            : base(instanceUrl, httpClient)
+            string tenantName,
+            HttpClient httpClient,
+            ApiVersion apiVersion = ApiVersion.v1)
+            : base(tenantName, httpClient, apiVersion)
         {
         }
 
-        public IHyperfindQueryRequestBuilder HyperfindQueries
+        public IHyperfindQueriesCollectionRequestBuilder HyperfindQueries
         {
             get
             {
-                return new HyperfindQueryRequestBuilder(this.BaseUrl + "/commons", this);
+                return new HyperfindQueriesCollectionRequestBuilder(this.BaseUrl + "/commons/hyperfind", this);
+            }
+        }
+
+        public ILocationsCollectionRequestBuilder Locations
+        {
+            get
+            {
+                return new LocationsCollectionRequestBuilder(this.BaseUrl + "/commons/locations", this);
+            }
+        }
+
+        public ITimecardsRequestBuilder Timecards
+        {
+            get
+            {
+                return new TimecardsRequestBuilder(this.BaseUrl + "/timekeeping/timecard/multi_read", this);
             }
         }
     }
 
     public interface IWorkforceDimensionsClient
     {
+        IHyperfindQueriesCollectionRequestBuilder HyperfindQueries { get; }
 
+        ILocationsCollectionRequestBuilder Locations { get; }
+
+        ITimecardsRequestBuilder Timecards { get; }
     }
 }

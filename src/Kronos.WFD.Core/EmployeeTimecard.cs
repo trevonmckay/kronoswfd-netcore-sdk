@@ -1,10 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Kronos.WFD
 {
     public class EmployeeTimecard
     {
-        public TimecardDailyTotalSummary DailyTotalSummary { get; set; }
+        public IEnumerable<TimecardDailyTotalSummary> DailyTotalSummary { get; set; }
     }
 
     public class TimecardDailyTotalSummary
