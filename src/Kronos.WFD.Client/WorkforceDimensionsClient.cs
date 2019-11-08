@@ -54,7 +54,7 @@ namespace Kronos.WFD.Client
         {
             get
             {
-                return new TimecardsRequestBuilder(this.BaseUrl + "/timekeeping/timecard/multi_read", this);
+                return new TimecardsRequestBuilder(this.BaseUrl + "/timekeeping", this);
             }
         }
     }

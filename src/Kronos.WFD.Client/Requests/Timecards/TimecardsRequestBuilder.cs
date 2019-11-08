@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace Kronos.WFD.Client.Requests
+﻿namespace Kronos.WFD.Client.Requests
 {
     public class TimecardsRequestBuilder : BaseRequestBuilder, ITimecardsRequestBuilder
     {
@@ -10,21 +8,27 @@ namespace Kronos.WFD.Client.Requests
 
         }
 
-        public TimecardsRequest Request(EmployeeTimecardsMultiReadParameters parameters)
+        public ITimecardsCollectionRequestBuilder Employee
         {
-            return this.Request(parameters, null);
+            get
+            {
+                return new TimecardsCollectionRequestBuilder(this.AppendSegmentToRequestUrl("employee_timecard"), this.Client);
+            }
         }
 
-        public TimecardsRequest Request(EmployeeTimecardsMultiReadParameters parameters, IEnumerable<Option> options)
+        public ITimecardsCollectionRequestBuilder Manager
         {
-            return new TimecardsRequest(parameters, this.RequestUrl, this.Client, options);
+            get
+            {
+                return new TimecardsCollectionRequestBuilder(this.AppendSegmentToRequestUrl("timecard"), this.Client);
+            }
         }
     }
 
     public interface ITimecardsRequestBuilder
     {
-        TimecardsRequest Request(EmployeeTimecardsMultiReadParameters parameters);
+        ITimecardsCollectionRequestBuilder Employee { get; }
 
-        TimecardsRequest Request(EmployeeTimecardsMultiReadParameters parameters, IEnumerable<Option> options);
+        ITimecardsCollectionRequestBuilder Manager { get; }
     }
 }

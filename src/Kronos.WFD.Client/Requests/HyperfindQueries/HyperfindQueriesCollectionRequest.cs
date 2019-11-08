@@ -15,11 +15,6 @@ namespace Kronos.WFD.Client.Requests
 
         }
 
-        public async Task<IHyperfindQueriesCollectionPage> GetAsync()
-        {
-            return await this.GetAsync(CancellationToken.None);
-        }
-
         public async Task<IHyperfindQueriesCollectionPage> GetAsync(CancellationToken cancellationToken)
         {
             this.Method = "GET";
@@ -48,12 +43,37 @@ namespace Kronos.WFD.Client.Requests
 
             return null;
         }
+
+        public async Task<IHyperfindQueriesCollectionPage> GetAsync()
+        {
+            return await this.GetAsync(CancellationToken.None);
+        }
+
+        public async Task<HyperfindQueryExecutionResponse> ExecuteAsync(HyperfindQueryExecutionParameters request, CancellationToken cancellationToken)
+        {
+            this.ContentType = "application/json";
+            this.Method = "POST";
+            this.AppendSegmentToRequestUrl("execute");
+
+            var executionResult = await this.SendAsync<HyperfindQueryExecutionResponse>(request, cancellationToken).ConfigureAwait(false);
+            return executionResult;
+        }
+
+        public async Task<HyperfindQueryExecutionResponse> ExecuteAsync(HyperfindQueryExecutionParameters request)
+        {
+            return await ExecuteAsync(request, CancellationToken.None);
+        }
     }
 
     public interface IHyperfindQueriesCollectionRequest
     {
+        Task<IHyperfindQueriesCollectionPage> GetAsync(CancellationToken cancellationToken);
+
         Task<IHyperfindQueriesCollectionPage> GetAsync();
 
-        Task<IHyperfindQueriesCollectionPage> GetAsync(CancellationToken cancellationToken);
+        Task<HyperfindQueryExecutionResponse> ExecuteAsync(HyperfindQueryExecutionParameters request, CancellationToken cancellationToken);
+
+        Task<HyperfindQueryExecutionResponse> ExecuteAsync(HyperfindQueryExecutionParameters request);
+
     }
 }

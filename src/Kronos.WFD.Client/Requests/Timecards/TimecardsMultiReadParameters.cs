@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace Kronos.WFD.Client.Requests
 {
-    public class EmployeeTimecardsMultiReadParameters
+    public class TimecardsMultiReadParameters
     {
         [JsonProperty(PropertyName = "multiReadOptions", NullValueHandling = NullValueHandling.Ignore)]
         public MultiReadOptions MultiReadOptions { get; set; }
@@ -40,6 +40,9 @@ namespace Kronos.WFD.Client.Requests
         [JsonProperty(PropertyName = "dateRange", NullValueHandling = NullValueHandling.Ignore)]
         public QueryableDateRange DateRange { get; set; }
 
+        [JsonProperty(PropertyName = "employees", NullValueHandling = NullValueHandling.Ignore)]
+        public EmployeesQueryParameters Employees { get; set; }
+
         [JsonProperty(PropertyName = "hyperFind", NullValueHandling = NullValueHandling.Ignore)]
         public HyperfindLookupParameters HyperFind { get; set; }
     }
@@ -62,5 +65,14 @@ namespace Kronos.WFD.Client.Requests
 
         [JsonProperty(PropertyName = "qualifier", NullValueHandling = NullValueHandling.Ignore)]
         public string Qualifier { get; set; }
+    }
+
+    public class EmployeesQueryParameters
+    {
+        [JsonProperty(PropertyName = "ids", NullValueHandling = NullValueHandling.Ignore)]
+        public IEnumerable<string> Ids { get; set; }
+
+        [JsonProperty(PropertyName = "qualifiers", NullValueHandling = NullValueHandling.Ignore)]
+        public IEnumerable<string> Qualifiers { get; set; }
     }
 }

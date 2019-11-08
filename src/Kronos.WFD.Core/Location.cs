@@ -17,28 +17,19 @@ namespace Kronos.WFD
         Forecast
     }
 
-    public enum LocationQualifier
-    {
-
-    }
-
     public class LocationReference
     {
         [JsonProperty(PropertyName = "id", NullValueHandling = NullValueHandling.Ignore)]
         public string Id { get; set; }
 
         [JsonProperty(PropertyName = "qualifier", NullValueHandling = NullValueHandling.Ignore)]
-        public LocationQualifier? Qualifier { get; set; }
+        public string Qualifier { get; set; }
 
         public LocationReference() { }
 
-        public LocationReference(string id)
+        public LocationReference(string id = null, string qualifier = null)
         {
             Id = id;
-        }
-
-        public LocationReference(LocationQualifier qualifier)
-        {
             Qualifier = qualifier;
         }
     }

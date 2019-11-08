@@ -318,6 +318,16 @@ namespace Kronos.WFD.Client.Requests
             this.RequestUrl = string.Format("{0}/{1}", this.RequestUrl, urlSegment);
         }
 
+        public void AddQueryOption(string name, string value)
+        {
+            if (this.QueryOptions == null)
+            {
+                this.QueryOptions = new List<QueryOption>();
+            }
+
+            this.QueryOptions.Add(new QueryOption(name, value));
+        }
+
         /// <summary>
         /// Builds the query string for the request from the query option collection.
         /// </summary>

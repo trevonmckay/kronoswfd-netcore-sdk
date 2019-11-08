@@ -12,14 +12,14 @@ namespace Kronos.WFD.Client.Requests
 
         }
 
-        public IHyperfindQueriesCollectionRequest Request()
-        {
-            return this.Request(null);
-        }
-
         public IHyperfindQueriesCollectionRequest Request(IEnumerable<Option> options)
         {
             return new HyperfindQueriesCollectionRequest(this.RequestUrl, this.Client, options);
+        }
+
+        public IHyperfindQueriesCollectionRequest Request()
+        {
+            return this.Request(null);
         }
 
         public IHyperfindQueryRequestBuilder this[string id]
@@ -29,14 +29,24 @@ namespace Kronos.WFD.Client.Requests
                 return new HyperfindQueryRequestBuilder(this.AppendSegmentToRequestUrl(id), this.Client);
             }
         }
+
+        public IPublicHyperfindQueriesCollectionRequestBuilder Public
+        {
+            get
+            {
+                return new PublicHyperfindQueriesCollectionRequestBuilder(this.RequestUrl + "/public", this.Client);
+            }
+        }
     }
 
     public interface IHyperfindQueriesCollectionRequestBuilder
     {
-        IHyperfindQueriesCollectionRequest Request();
-
         IHyperfindQueriesCollectionRequest Request(IEnumerable<Option> options);
 
+        IHyperfindQueriesCollectionRequest Request();
+
         IHyperfindQueryRequestBuilder this[string id] { get; }
+
+        IPublicHyperfindQueriesCollectionRequestBuilder Public { get; }
     }
 }
