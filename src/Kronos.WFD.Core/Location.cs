@@ -45,6 +45,11 @@ namespace Kronos.WFD
         [JsonProperty(PropertyName = "externalId")]
         public string ExternalId { get; set; }
 
+        public LocationReference OrgNodeTypeRef { get; set; }
+
+        [JsonProperty(PropertyName = "parentNodeRef")]
+        public LocationReference ParentNodeRef { get; set; }
+
         [JsonProperty(PropertyName = "name")]
         public string Name { get; set; }
 
@@ -66,6 +71,11 @@ namespace Kronos.WFD
         [JsonProperty(PropertyName = "expirationDate")]
         public DateTime ExpirationDate { get; set; }
 
+        [JsonProperty(PropertyName = "timezoneRef")]
+        public TimeZoneRef TimeZoneRef { get; set; }
+
+        public string OrgPath { get; set; }
+
         [JsonProperty(PropertyName = "firstRevision")]
         public bool FirstRevision { get; set; }
 
@@ -77,6 +87,8 @@ namespace Kronos.WFD
 
         [JsonProperty(PropertyName = "indirectWorkPercent")]
         public int IndirectWorkPercent { get; set; }
+
+        public LocationReference ContextRef { get; set; }
 
         public IDictionary<string, object> AdditionalData { get; set; }
     }

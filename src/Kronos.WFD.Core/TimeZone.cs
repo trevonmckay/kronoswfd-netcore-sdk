@@ -8,4 +8,11 @@
 
         public string Name { get; set; }
     }
+
+    public class TimeZoneRef
+    {
+        public string Id { get; set; }
+
+        public string Qualifier { get; set; }
+    }
 }

@@ -30,7 +30,9 @@ namespace Kronos.WFD.Client
             Username = username;
         }
 
-        public Task AuthenticateRequestAsync(HttpRequestMessage request)
+        private string _cachedAccessToken;
+
+        public Task AuthenticateRequestAsync(HttpRequestMessage request, bool forceRefresh)
         {
             var tokenUrl = $"https://{TenantName}.mykronos.com/api/authentication/access_token";
 
@@ -44,26 +46,39 @@ namespace Kronos.WFD.Client
                 new KeyValuePair<string, string>("auth_chain", "OAuthLdapService")
             };
 
-            var tokenRequest = new HttpRequestMessage(HttpMethod.Post, tokenUrl)
+            if (string.IsNullOrWhiteSpace(_cachedAccessToken) || forceRefresh)
             {
-                Content = new FormUrlEncodedContent(nameValueCollection),
-            };
-            tokenRequest.Headers.Add("appkey", AppKey);
-
-            using (var httpClient = new HttpClient())
-            {
-                var responseMessage = httpClient.SendAsync(tokenRequest).Result;
-                var responseBody = responseMessage.Content.ReadAsStringAsync().Result;
-
-                if (responseMessage.StatusCode == System.Net.HttpStatusCode.OK)
+                var tokenRequest = new HttpRequestMessage(HttpMethod.Post, tokenUrl)
                 {
-                    var authenticationResponse = JsonConvert.DeserializeObject<AuthenticationResponse>(responseBody);
-                    request.Headers.Add("Authorization", string.Format("{0} {1}", authenticationResponse.Type, authenticationResponse.AccessToken));
+                    Content = new FormUrlEncodedContent(nameValueCollection),
+                };
+                tokenRequest.Headers.Add("appkey", AppKey);
+
+                using (var httpClient = new HttpClient())
+                {
+                    var responseMessage = httpClient.SendAsync(tokenRequest).Result;
+                    var responseBody = responseMessage.Content.ReadAsStringAsync().Result;
+
+                    if (responseMessage.StatusCode == System.Net.HttpStatusCode.OK)
+                    {
+                        var authenticationResponse = JsonConvert.DeserializeObject<AuthenticationResponse>(responseBody);
+                        _cachedAccessToken = authenticationResponse.AccessToken;
+                        request.Headers.Add("Authorization", string.Format("{0} {1}", authenticationResponse.Type, authenticationResponse.AccessToken));
+                    }
                 }
+            }
+            else
+            {
+                request.Headers.Add("Authorization", string.Format("{0} {1}", "Bearer", _cachedAccessToken));
             }
 
             request.Headers.Add("appkey", AppKey);
             return Task.FromResult(0);
+        }
+
+        public Task AuthenticateRequestAsync(HttpRequestMessage request)
+        {
+            return AuthenticateRequestAsync(request, false);
         }
     }
 }

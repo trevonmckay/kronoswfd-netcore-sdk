@@ -7,6 +7,8 @@ namespace Kronos.WFD
     {
         public string Id { get; set; }
 
+        public EntityReference DataSource { get; set; }
+
         public Employee Employee { get; set; }
 
         [JsonProperty(PropertyName = "punchDtm")]
@@ -16,14 +18,23 @@ namespace Kronos.WFD
         public DateTime RoundedTimestamp { get; set; }
 
         [JsonProperty(PropertyName = "enteredOnDtm")]
-        public DateTime RecordedAt { get; set; }
+        public DateTime EnteredOn { get; set; }
 
-        public TimeZone TimeZone { get; set; }
+        [JsonProperty(PropertyName = "updatedOnDtm")]
+        public DateTime UpdatedOn { get; set; }
+
+        public EntityReference TimeZone { get; set; }
+
+        public EntityReference OrgJob { get; set; }
+
+        public EntityReference Location { get; set; }
 
         public bool HasComments { get; set; }
 
         public bool IsPhantom { get; set; }
 
         public bool IsScheduled { get; set; }
+
+        public bool ValidateAsTimestamp { get; set; }
     }
 }

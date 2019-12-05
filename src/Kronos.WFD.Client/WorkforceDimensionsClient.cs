@@ -34,6 +34,22 @@ namespace Kronos.WFD.Client
         {
         }
 
+        public IAggregatedDataRequest AggregatedData
+        {
+            get
+            {
+                return new AggregatedDataRequest(this.BaseUrl + "/commons/data/multi_read", this);
+            }
+        }
+
+        public IDataDictionaryCollectionRequestBuilder DataDictionary
+        {
+            get
+            {
+                return new DataDictionaryCollectionRequestBuilder(this.BaseUrl + "/commons/data_dictionary/data_elements", this);
+            }
+        }
+
         public IHyperfindQueriesCollectionRequestBuilder HyperfindQueries
         {
             get
@@ -50,6 +66,14 @@ namespace Kronos.WFD.Client
             }
         }
 
+        public IPayCodesRequestBuilder PayCodes
+        {
+            get
+            {
+                return new PayCodesRequestBuilder(this.BaseUrl + "/timekeeping/setup", this);
+            }
+        }
+
         public ITimecardsRequestBuilder Timecards
         {
             get
@@ -61,9 +85,15 @@ namespace Kronos.WFD.Client
 
     public interface IWorkforceDimensionsClient
     {
+        IAggregatedDataRequest AggregatedData { get; }
+
+        IDataDictionaryCollectionRequestBuilder DataDictionary { get; }
+
         IHyperfindQueriesCollectionRequestBuilder HyperfindQueries { get; }
 
         ILocationsCollectionRequestBuilder Locations { get; }
+
+        IPayCodesRequestBuilder PayCodes { get; }
 
         ITimecardsRequestBuilder Timecards { get; }
     }
