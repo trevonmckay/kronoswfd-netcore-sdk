@@ -4,8 +4,6 @@
     <TargetFramework>netcoreapp3.0</TargetFramework>
 
     <IsPackable>false</IsPackable>
-
-    <LangVersion>8.0</LangVersion>
   </PropertyGroup>
 
   <ItemGroup>
@@ -16,7 +14,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\Kronos.WFD.Client\Kronos.WFD.Client.csproj" />
+    <ProjectReference Include="..\..\src\Kronos.WFD.Core\Kronos.WFD.Core.csproj" />
   </ItemGroup>
 
 </Project>

@@ -9,6 +9,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kronos.WFD.Client", "src\Kr
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kronos.WFD.Client.Tests", "tests\Kronos.WFD.Client.Tests\Kronos.WFD.Client.Tests.csproj", "{D2F51B81-84F1-404B-876C-EFDC4337EA4F}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kronos.WFD.Core.Tests", "tests\Kronos.WFD.Core.Tests\Kronos.WFD.Core.Tests.csproj", "{20E890A4-5752-46AF-922C-A32657C40CDF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{D2F51B81-84F1-404B-876C-EFDC4337EA4F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D2F51B81-84F1-404B-876C-EFDC4337EA4F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D2F51B81-84F1-404B-876C-EFDC4337EA4F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{20E890A4-5752-46AF-922C-A32657C40CDF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{20E890A4-5752-46AF-922C-A32657C40CDF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{20E890A4-5752-46AF-922C-A32657C40CDF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{20E890A4-5752-46AF-922C-A32657C40CDF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
