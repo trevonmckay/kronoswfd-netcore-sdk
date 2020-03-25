@@ -13,7 +13,6 @@ trigger:
       - README.md
 
 variables:
-  preRelease: $(PreRelease)
   Major: '1'
   Minor: '0'
   Patch: '0'
@@ -29,7 +28,7 @@ steps:
     command: pack
     packagesToPack: $(buildProject)
     versioningScheme: 'byBuildNumber'
-  condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'), eq(variables['preRelease'], False))
+  condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'), eq(variables['PreRelease'], False))
 
 - task: DotNetCoreCLI@2
   displayName: 'Create pre-release Nuget package'
@@ -37,7 +36,7 @@ steps:
     command: pack
     packagesToPack: $(buildProject)
     buildProperties: 'Version=$(build.BuildNumber)-prerelease'
-  condition: or(and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/develop')), eq(variables['preRelease'], True))
+  condition: or(and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/develop')), eq(variables['PreRelease'], True))
 
 # Push NuGet packages.
 - task: DotNetCoreCLI@2
