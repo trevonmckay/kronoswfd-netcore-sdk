@@ -1,0 +1,56 @@
+trigger:
+  batch: true
+  branches:
+    include:
+      - develop
+      - master
+      - vNext
+  paths:
+    include:
+      - src/*
+    exclude:
+      - docs/*
+      - README.md
+
+variables:
+  Major: '1'
+  Minor: '0'
+  Patch: '1'
+  buildProject: '**/*.csproj;-:**/*.Tests.csproj'
+
+name: '$(Major).$(Minor).$(Patch)$(Rev:.r)'
+
+steps:
+# Pack NuGet packages.
+- task: DotNetCoreCLI@2
+  displayName: 'Create Nuget package'
+  inputs:
+    command: pack
+    packagesToPack: $(buildProject)
+    versioningScheme: 'byBuildNumber'
+  condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
+
+- task: DotNetCoreCLI@2
+  displayName: 'Create pre-release Nuget package'
+  inputs:
+    command: pack
+    packagesToPack: $(buildProject)
+    buildProperties: 'Version=$(build.BuildNumber)-prerelease'
+  condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/develop'))
+
+# Push NuGet packages.
+- task: DotNetCoreCLI@2
+- task: DotNetCoreCLI@2
+  displayName: 'Publish NuGet packages'
+  inputs:
+    command: 'push'
+    packagesToPush: '$(build.artifactStagingDirectory)/*.nupkg'
+    nuGetFeedType: 'external'
+    publishFeedCredentials: 'NuGet - trevonmckay'
+
+# Publish build artifacts.
+- task: PublishBuildArtifacts@1
+  displayName: 'Publish build artifact'
+  inputs:
+    PathtoPublish: $(build.artifactStagingDirectory)
+    ArtifactName: '$(build.DefinitionName)_$(build.SourceBranchName)_$(build.BuildNumber)'
