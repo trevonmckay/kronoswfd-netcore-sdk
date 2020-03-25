@@ -39,12 +39,10 @@ steps:
   condition: or(and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/develop')), eq(variables['PreRelease'], True))
 
 # Push NuGet packages.
-- task: DotNetCoreCLI@2
-- task: DotNetCoreCLI@2
-  displayName: 'Publish NuGet packages'
+- task: NuGetCommand@2
   inputs:
     command: 'push'
-    packagesToPush: '$(build.artifactStagingDirectory)/*.nupkg'
+    packagesToPush: '$(Build.ArtifactStagingDirectory)/**/*.nupkg;!$(Build.ArtifactStagingDirectory)/**/*.symbols.nupkg'
     nuGetFeedType: 'external'
     publishFeedCredentials: 'NuGet - trevonmckay'
 
