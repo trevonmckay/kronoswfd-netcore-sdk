@@ -7,7 +7,7 @@ namespace Kronos.WFD
 {
     public class Schedule                                                       
     {                              
-        public IEnumerable<ScheduleShifts> Shifts;                             
+        public IEnumerable<ScheduleShift> Shifts;                             
     }
 
     public class ScheduleShift
