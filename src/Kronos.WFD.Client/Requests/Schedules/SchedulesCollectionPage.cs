@@ -3,7 +3,7 @@
     public class SchedulesCollectionPage : CollectionPage<Schedule>, ISchedulesCollectionPage
     {
         /// <summary>
-        /// Gets the next page <see cref="IGraphServiceUsersCollectionRequest"/> instance.
+        /// Gets the next page <see cref="ISchedulesCollectionPage"/> instance.
         /// </summary>
         public ISchedulesRequest NextPageRequest { get; private set; }
 
