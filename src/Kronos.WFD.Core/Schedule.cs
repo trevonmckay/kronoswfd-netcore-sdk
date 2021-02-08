@@ -10,7 +10,7 @@ namespace Kronos.WFD
         public IEnumerable<ScheduleShifts> Shifts;                             
     }
 
-    public class ScheduleShifts
+    public class ScheduleShift
     {
         public bool Posted { get; set; }
         public DateTime StartDateTime { get; set; }
