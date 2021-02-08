@@ -81,6 +81,13 @@ namespace Kronos.WFD.Client
                 return new TimecardsRequestBuilder(this.BaseUrl + "/timekeeping", this);
             }
         }
+        public ISchedulesRequestBuilder Schedules
+        {
+            get
+            {
+                return new SchedulesRequestBuilder(this.BaseUrl + "/scheduling", this);
+            }
+        }
     }
 
     public interface IWorkforceDimensionsClient
@@ -96,5 +103,6 @@ namespace Kronos.WFD.Client
         IPayCodesRequestBuilder PayCodes { get; }
 
         ITimecardsRequestBuilder Timecards { get; }
+        ISchedulesRequestBuilder Schedules { get; }
     }
 }
