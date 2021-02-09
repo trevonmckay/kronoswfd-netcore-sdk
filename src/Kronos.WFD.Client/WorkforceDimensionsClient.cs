@@ -81,6 +81,14 @@ namespace Kronos.WFD.Client
                 return new TimecardsRequestBuilder(this.BaseUrl + "/timekeeping", this);
             }
         }
+
+        public ITimezonesCollectionRequestBuilder Timezones
+        {
+            get
+            {
+                return new TimezonesCollectionRequestBuilder(this.BaseUrl + "/commons/setup/timezones", this);
+            }
+        }
     }
 
     public interface IWorkforceDimensionsClient
@@ -96,5 +104,7 @@ namespace Kronos.WFD.Client
         IPayCodesRequestBuilder PayCodes { get; }
 
         ITimecardsRequestBuilder Timecards { get; }
+
+        ITimezonesCollectionRequestBuilder Timezones { get; }
     }
 }
