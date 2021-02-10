@@ -14,7 +14,7 @@ trigger:
 
 variables:
   Major: '1'
-  Minor: '0'
+  Minor: '2'
   Patch: '0'
   buildProject: '**/*.csproj;-:**/*.Tests.csproj'
 
@@ -44,7 +44,7 @@ steps:
     command: 'push'
     packagesToPush: '$(Build.ArtifactStagingDirectory)/**/*.nupkg;!$(Build.ArtifactStagingDirectory)/**/*.symbols.nupkg'
     nuGetFeedType: 'external'
-    publishFeedCredentials: 'NuGet - trevonmckay'
+    publishFeedCredentials: 'NuGet - Unifi'
 
 # Publish build artifacts.
 - task: PublishBuildArtifacts@1
