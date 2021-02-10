@@ -82,11 +82,19 @@ namespace Kronos.WFD.Client
             }
         }
 
+
         public ITimezonesCollectionRequestBuilder Timezones
         {
             get
             {
                 return new TimezonesCollectionRequestBuilder(this.BaseUrl + "/commons/setup/timezones", this);
+
+        public ISchedulesRequestBuilder Schedules
+        {
+            get
+            {
+                return new SchedulesRequestBuilder(this.BaseUrl + "/scheduling", this);
+
             }
         }
     }
@@ -105,6 +113,10 @@ namespace Kronos.WFD.Client
 
         ITimecardsRequestBuilder Timecards { get; }
 
+
         ITimezonesCollectionRequestBuilder Timezones { get; }
+
+        ISchedulesRequestBuilder Schedules { get; }
+
     }
 }
