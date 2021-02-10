@@ -34,14 +34,6 @@ namespace Kronos.WFD.Client.Requests
         {
             return this.GetAsync(CancellationToken.None);
         }
-
-        public ITimezoneRequest PersonNumber(string personNumber)
-        {
-            this.AddQueryOption("person_number", personNumber);
-            return this;
-        }
-
-        // Add Name, EmployeeId ...
     }
 
     public interface ITimezoneRequest
@@ -49,7 +41,5 @@ namespace Kronos.WFD.Client.Requests
         Task<Timezones> GetAsync(CancellationToken cancellationToken);
 
         Task<Timezones> GetAsync();
-
-        ITimezoneRequest PersonNumber(string personNumber);
     }
 }

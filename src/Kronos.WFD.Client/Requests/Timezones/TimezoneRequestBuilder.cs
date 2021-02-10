@@ -12,14 +12,6 @@ namespace Kronos.WFD.Client.Requests
 
     internal class TimezoneRequestBuilder : BaseRequestBuilder, ITimezoneRequestBuilder
     {
-        /*
-         /v1/timekeeping/employee_timecard/multi-read
-        /v1/commons/setup/timezones?name=""                 --> The name of the timezone
-        /v1/commons/setup/timezones?employee_id=""          --> An ID that uniquely identifies an employee
-        /v1/commons/setup/timezones?person_number=""        --> A unique identifier for a person
-        /v1/commons/setup/timezones?location_id=""          --> The location ID associated with a timezone
-        /v1/commons/setup/timezones?date=""                 --> The effective date for a location
-         */
         private readonly TimezoneRequestQueryParameter _queryParmeter;
         private readonly string _queryParamValue;
 
