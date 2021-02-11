@@ -88,6 +88,8 @@ namespace Kronos.WFD.Client
             get
             {
                 return new TimezonesCollectionRequestBuilder(this.BaseUrl + "/commons/setup/timezones", this);
+            }
+        }
 
         public ISchedulesRequestBuilder Schedules
         {

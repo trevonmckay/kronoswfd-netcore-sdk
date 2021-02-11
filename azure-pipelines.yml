@@ -14,7 +14,7 @@ trigger:
 
 variables:
   Major: '1'
-  Minor: '2'
+  Minor: '3'
   Patch: '0'
   buildProject: '**/*.csproj;-:**/*.Tests.csproj'
 
