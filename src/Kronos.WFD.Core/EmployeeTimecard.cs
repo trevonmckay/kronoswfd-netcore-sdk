@@ -12,13 +12,34 @@ namespace Kronos.WFD
 
         public DateTime StartDate { get; set; }
 
+        public DateTime EndDate { get; set; }
+
         public IEnumerable<TimecardDailyTotalSummary> DailyTotalSummary { get; set; }
+
+        public IEnumerable<ItemTotalSummary> ItemTotalSummary { get; set; }
 
         public IEnumerable<TimecardPunch> Punches { get; set; }
 
         public IEnumerable<TimecardTotals> Totals { get; set; }
 
         public IEnumerable<WorkedShift> WorkedShifts { get; set; }
+
+        public bool HasPendingChanges { get; set; }
+
+        public string TotalizationStatus { get; set; }
+    }
+
+    public class ItemTotalSummary
+    {
+        public Employee Employee { get; set; }
+
+        public string ItemId { get; set; }
+
+        public DateTime StartApplyDate { get; set; }
+
+        public DateTime EndApplyDate { get; set; }
+
+        public double ItemHours { get; set; }
     }
 
     public class TimecardDailyTotalSummary
@@ -86,14 +107,6 @@ namespace Kronos.WFD
         public CostCenter CostCenter { get; set; }
 
         public EntityReference PayCode { get; set; }
-
-        public DateTime ApplyDate { get; set; }
-
-        public DateTime StartDateTime { get; set; }
-
-        public DateTime EndDateTime { get; set; }
-
-        public DateTime OriginalDate { get; set; }
 
         public double OriginalDurationInHours { get; set; }
 
