@@ -87,14 +87,6 @@ namespace Kronos.WFD
 
         public EntityReference PayCode { get; set; }
 
-        public DateTime ApplyDate { get; set; }
-
-        public DateTime StartDateTime { get; set; }
-
-        public DateTime EndDateTime { get; set; }
-
-        public DateTime OriginalDate { get; set; }
-
         public double OriginalDurationInHours { get; set; }
 
         public double Wages { get; set; }
