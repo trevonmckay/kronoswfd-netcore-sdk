@@ -1,5 +1,6 @@
 ﻿using Kronos.WFD.Authentication;
 using Kronos.WFD.Client.Requests;
+using Kronos.WFD.Client.Requests.BulkData;
 using System.Net.Http;
 
 namespace Kronos.WFD.Client
@@ -99,6 +100,14 @@ namespace Kronos.WFD.Client
 
             }
         }
+        public IBulkDataRequestBuilder BulkData
+        {
+            get
+            {
+                return new BulkDataRequestBuilder(this.BaseUrl + "/commons", this);
+
+            }
+        }
     }
 
     public interface IWorkforceDimensionsClient
@@ -119,6 +128,7 @@ namespace Kronos.WFD.Client
         ITimezonesCollectionRequestBuilder Timezones { get; }
 
         ISchedulesRequestBuilder Schedules { get; }
+        IBulkDataRequestBuilder BulkData { get; }
 
     }
 }
