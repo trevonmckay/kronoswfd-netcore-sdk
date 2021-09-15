@@ -20,7 +20,7 @@ namespace Kronos.WFD.Client.Requests.BulkData
     public class BulkDataPayload
     {
         [JsonProperty(PropertyName = "select", NullValueHandling = NullValueHandling.Ignore)]
-        public BulkDataSelect Select { get; set; }
+        public List<BulkDataSelect> Select { get; set; }
 
         [JsonProperty(PropertyName = "from", NullValueHandling = NullValueHandling.Ignore)]
         public BulkDataFrom From { get; set; }
