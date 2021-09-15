@@ -39,12 +39,14 @@ namespace Kronos.WFD.Client.Requests.BulkData
             var noOfTries = 0;
             while(noOfTries < 5 && !isSuccess)
             {
-                Thread.Sleep(60000);
+                await Task.Delay(TimeSpan.FromSeconds(90));
                 try
                 {
                     var response = await this.SendStreamRequestAsync(null, cancellationToken).ConfigureAwait(false);
-                    StreamReader reader = new StreamReader(response);
-                    responseString = reader.ReadToEnd();
+                    using(StreamReader reader = new StreamReader(response))
+                    {
+                        responseString = reader.ReadToEnd();
+                    }
                     isSuccess = true;
                 }
                 catch (Exception ex)
@@ -53,7 +55,7 @@ namespace Kronos.WFD.Client.Requests.BulkData
                     noOfTries += 1;
                     if(noOfTries == 5)
                     {
-                        return ex.Message;
+                        return "Exception Caught: " + ex.Message;
                     }
                 }
             }
