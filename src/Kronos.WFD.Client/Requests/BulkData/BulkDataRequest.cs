@@ -34,17 +34,32 @@ namespace Kronos.WFD.Client.Requests.BulkData
             this.AppendSegmentToRequestUrl(executionKey);
             this.AppendSegmentToRequestUrl("file");
             Console.WriteLine();
-            var response = await this.SendStreamRequestAsync(null, cancellationToken).ConfigureAwait(false);
-
-            StreamReader reader = new StreamReader(response);
-            string responseString = reader.ReadToEnd();
-
-            if (response != null)
+            string responseString = "";
+            bool isSuccess = false;
+            var noOfTries = 0;
+            while(noOfTries < 5 && !isSuccess)
             {
-                return responseString;
+                await Task.Delay(TimeSpan.FromSeconds(90));
+                try
+                {
+                    var response = await this.SendStreamRequestAsync(null, cancellationToken).ConfigureAwait(false);
+                    using(StreamReader reader = new StreamReader(response))
+                    {
+                        responseString = reader.ReadToEnd();
+                    }
+                    isSuccess = true;
+                }
+                catch (Exception ex)
+                {
+                    isSuccess = false;
+                    noOfTries += 1;
+                    if(noOfTries == 5)
+                    {
+                        return "Exception Caught: " + ex.Message;
+                    }
+                }
             }
-
-            return null;
+            return responseString;
         }
     }
 
